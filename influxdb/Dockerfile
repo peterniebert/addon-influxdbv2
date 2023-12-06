@@ -1,4 +1,4 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base/amd64:6.2.7
+ARG BUILD_FROM=ghcr.io/hassio-addons/debian-base/amd64:7.2.0
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
@@ -14,8 +14,8 @@ ARG TRAEFIK_VERSION="2.10.4"
 RUN \
     apt-get update \
     && apt-get install -y --no-install-recommends \
-        luarocks=2.4.2+dfsg-1.1 \
-        procps=2:3.3.17-5 \
+        luarocks=3.8.0+dfsg1-1 \
+        procps=2:4.0.2-3 \
     \
     && luarocks install lua-resty-http 0.15-0 \
     \
@@ -23,7 +23,6 @@ RUN \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
     && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi \
     \
-
     && curl -J -L -o /tmp/influxdb.deb \
         "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}-${ARCH}.deb" \
     \

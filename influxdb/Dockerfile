@@ -16,10 +16,10 @@ RUN \
     && apt-get install -y --no-install-recommends \
         luarocks=3.8.0+dfsg1-1 \
         procps=2:4.0.2-3 \
-    \
-    && luarocks install lua-resty-http 0.15-0 \
-    \
-    && ARCH="${BUILD_ARCH}" \
+    
+RUN luarocks install lua-resty-http 0.15-0 \
+    
+RUN ARCH="${BUILD_ARCH}" \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
     && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi \
     \
@@ -31,20 +31,20 @@ RUN \
     \
     && curl -J -L -o /tmp/traefik.tar.gz \
         "https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz" \
-    \
-    && dpkg --install /tmp/influxdb.deb \
+    
+RUN dpkg --install /tmp/influxdb.deb \
     && tar xvzf /tmp/influxcli.tar.gz -C /tmp \
     && cp /tmp/influx /usr/local/bin/ \
     && tar xvzf /tmp/traefik.tar.gz -C /tmp \
     && cp /tmp/traefik /usr/local/bin/ \
-    \
-    && rm -fr \
+
+RUN rm -fr \
         /tmp/* \
         /etc/nginx \
         /var/{cache,log}/* \
         /var/lib/apt/lists/* \
-    \
-    && mkdir -p /var/log/nginx \
+    
+RUN mkdir -p /var/log/nginx \
     && touch /var/log/nginx/error.log
 
 RUN mkdir -p /data/influxdb

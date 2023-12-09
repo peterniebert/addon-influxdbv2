@@ -11,10 +11,11 @@ ARG INFLUXDB_VERSION="2.7.1"
 ARG INFLUXCLI_VERSION="2.7.3"
 ARG TRAEFIK_VERSION="2.10.4"
 
-RUN \
-    apt-get update \
-    && apt-get install -y --no-install-recommends \
-        luarocks=3.8.0+dfsg1-1 \
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
+        luarocks=3.8.0+dfsg1-1
+        
+RUN apt-get install -y --no-install-recommends \
         procps=2:4.0.2-3 
     
 RUN luarocks install lua-resty-http 0.15-0 \

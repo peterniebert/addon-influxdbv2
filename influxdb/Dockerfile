@@ -22,18 +22,16 @@ RUN ARCH="${BUILD_ARCH}" \
    && echo curl -J -L -o /tmp/influxdb.deb \
         "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}-${ARCH}.deb" \
    && curl -J -L -o /tmp/influxdb.deb \
-        "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}-${ARCH}.deb"
-    
-RUN curl -J -L -o /tmp/influxcli.tar.gz \
-        "https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUXCLI_VERSION}-linux-${ARCH}.tar.gz"
-    
-RUN  curl -J -L -o /tmp/traefik.tar.gz \
+        "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}-${ARCH}.deb" \
+   && curl -J -L -o /tmp/influxcli.tar.gz \
+        "https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUXCLI_VERSION}-linux-${ARCH}.tar.gz" \
+   && curl -J -L -o /tmp/traefik.tar.gz \
         "https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz"
     
 RUN  dpkg --install /tmp/influxdb.deb 
-RUN  tar xvzf /tmp/influxcli.tar.gz -C /tmp \
-RUN cp /tmp/influx /usr/local/bin/ \
-RUN tar xvzf /tmp/traefik.tar.gz -C /tmp \
+RUN  tar xvzf /tmp/influxcli.tar.gz -C /tmp
+RUN cp /tmp/influx /usr/local/bin/
+RUN tar xvzf /tmp/traefik.tar.gz -C /tmp
 RUN cp /tmp/traefik /usr/local/bin/ 
     
 RUN  rm -fr \

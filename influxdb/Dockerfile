@@ -13,15 +13,15 @@ ARG TRAEFIK_VERSION="2.10.4"
 
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
-        luarocks=3.8.0+dfsg1-1 procps=2:4.0.2-3 
+        luarocks=3.8.0+dfsg1-1 procps=2:4.0.2-3 \
+    && luarocks install lua-resty-http 0.15-0 
     
-RUN luarocks install lua-resty-http 0.15-0 \
-    \
-    && ARCH="${BUILD_ARCH}" \
+RUN ARCH="${BUILD_ARCH}" \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
-    && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi
-    
-RUN curl -J -L -o /tmp/influxdb.deb \
+    && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi \
+   && echo curl -J -L -o /tmp/influxdb.deb \
+        "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}-${ARCH}.deb" \
+   && curl -J -L -o /tmp/influxdb.deb \
         "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}-${ARCH}.deb"
     
 RUN curl -J -L -o /tmp/influxcli.tar.gz \

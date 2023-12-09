@@ -12,27 +12,23 @@ ARG INFLUXCLI_VERSION="2.7.3"
 ARG TRAEFIK_VERSION="2.10.4"
 
 RUN apt-get update
-RUN apt search luarocks
 RUN apt-get install -y --no-install-recommends \
-        luarocks=3.8.0+dfsg1-1
-
-RUN apt-get install -y --no-install-recommends \
-        procps=2:4.0.2-3 
+        luarocks=3.8.0+dfsg1-1 procps=2:4.0.2-3 
     
 RUN luarocks install lua-resty-http 0.15-0 \
     \
     && ARCH="${BUILD_ARCH}" \
     && if [ "${BUILD_ARCH}" = "aarch64" ]; then ARCH="arm64"; fi \
-    && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi \
+    && if [ "${BUILD_ARCH}" = "armv7" ]; then ARCH="armhf"; fi
     
 RUN curl -J -L -o /tmp/influxdb.deb \
-        "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}-${ARCH}.deb" \
+        "https://dl.influxdata.com/influxdb/releases/influxdb2-${INFLUXDB_VERSION}-${ARCH}.deb"
     
 RUN curl -J -L -o /tmp/influxcli.tar.gz \
-        "https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUXCLI_VERSION}-linux-${ARCH}.tar.gz" \
+        "https://dl.influxdata.com/influxdb/releases/influxdb2-client-${INFLUXCLI_VERSION}-linux-${ARCH}.tar.gz"
     
 RUN  curl -J -L -o /tmp/traefik.tar.gz \
-        "https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz" \
+        "https://github.com/traefik/traefik/releases/download/v${TRAEFIK_VERSION}/traefik_v${TRAEFIK_VERSION}_linux_${ARCH}.tar.gz"
     
 RUN  dpkg --install /tmp/influxdb.deb 
 RUN  tar xvzf /tmp/influxcli.tar.gz -C /tmp \
